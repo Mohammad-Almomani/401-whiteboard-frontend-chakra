@@ -1,21 +1,9 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { Link } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Alert } from "react-bootstrap";
+import { Alert, Button, Form, FormLabel } from "react-bootstrap";
 import { useLoginContext } from "../Context/AuthContext";
-
-const theme = createTheme();
+import {  LockIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
+import { Avatar, WrapItem, Heading, VStack, HStack, Box } from "@chakra-ui/react";
 
 export default function MaterialSignIn() {
   const {
@@ -29,61 +17,74 @@ export default function MaterialSignIn() {
   } = useLoginContext();
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
+<div style={{alignItems: "center"}}>
+    <Box borderColor='gray.100' 
+    borderWidth='2px' 
+    p='4' 
+    borderRadius='lg'
+    w={{base: '90vw', sm:'80vw', lg:'50vw', xl:'40vw'}}
+    alignSelf='center'
+    marginLeft='30%'
+    // marginRight='25%'
+    
+
+    // position='center'
+    >
+              <VStack
           sx={{
             marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
+            
+          <VStack spacing={10}>
+           <WrapItem>
+          <Avatar size='lg' icon={<LockIcon fontSize='2rem'/>} />
+          </WrapItem>
+
+          <Heading as='h1' size='3xl'>
             Sign in
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleLogIn}
-            noValidate
-            sx={{ mt: 1 }}
+          </Heading>
+          </VStack>
+
+          <Form onSubmit={handleLogIn}>
+
+          <VStack spacing={4}
           >
-            <TextField
-              margin="normal"
-              fullWidth
+            <FormLabel htmlFor="email">Email or Username</FormLabel>
+            <Form.Control
               id="email"
-              label="Email or Username"
               name="email"
-              type="email"
-              autoFocus
+              type="text"
               data-testid="username"
               required
             />
-            <TextField
-              margin="normal"
-              fullWidth
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <HStack>
+            <Form.Control
               name="password"
-              label="Password"
               type={passwordTypeSignIn}
               id="password"
-              autoComplete="current-password"
-              data-testid="password"
               required
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  onClick={togglePasswordSignIn}
-                  value="remember"
-                  color="primary"
-                />
-              }
-              label="Show Password"
-            />
+              />
+              {passwordTypeSignIn == 'password'? <ViewIcon
+                  style={{ cursor: "pointer" }}
+                    onClick={togglePasswordSignIn}
+                    name="showPassword"
+                    value="remember"
+                    color="primary"
+                  />:
+                  <ViewOffIcon
+                  style={{ cursor: "pointer" }}
+                    onClick={togglePasswordSignIn}
+                    name="showPassword"
+                    value="remember"
+                    color="primary"
+                  />}
+            </HStack>
+            <HStack spacing={10} >
+              </HStack>
+
+
             {notFilledSignIn && (
               <Alert key="light" variant="danger">
                 Please enter your email and password
@@ -96,32 +97,32 @@ export default function MaterialSignIn() {
             )}
             <Button
               type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
               data-testid="signInButton"
             >
               Sign In
             </Button>
+          </VStack>
+          </Form>
 
-            <Grid container>
-              <Grid item xs>
+            <HStack >
+              <p >
                 <Link onClick={handleForgetPassword}>Forgot password?</Link>
-              </Grid>
-              <Grid item>
+              </p>
+              <p >
                 <Link to="/signup" variant="body2" data-testid="signUpRoute">
                   {"Don't have an account? Sign Up"}
                 </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
+              </p>
+            </HStack>
+
+        </VStack>
         {contactAdmin && (
           <Alert key="strong" variant="danger" onClick={handleForgetPassword}>
             Please contact the admin to reset your password
           </Alert>
         )}
-      </Container>
-    </ThemeProvider>
+        </Box>
+      </div>
+
   );
 }

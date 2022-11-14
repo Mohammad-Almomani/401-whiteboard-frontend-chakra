@@ -1,164 +1,86 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from "react";
 import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItemText from "@mui/material/ListItemText";
-import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+// import AppBar from "@mui/material/AppBar";
+// import Box from "@mui/material/Box";
+// import Divider from "@mui/material/Divider";
+// import Drawer from "@mui/material/Drawer";
+// import IconButton from "@mui/material/IconButton";
+// import List from "@mui/material/List";
+// import ListItemText from "@mui/material/ListItemText";
+// import MenuIcon from "@mui/icons-material/Menu";
+// import Toolbar from "@mui/material/Toolbar";
+// import Typography from "@mui/material/Typography";
+// import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import logo from "./assets/logo-re.png";
 import { useLoginContext } from "../Context/AuthContext";
+import { Box, Heading, HStack, IconButton, Image, Spacer, Stack, StackDivider, useColorMode } from "@chakra-ui/react";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+// import { HStack } from "@chakra-ui/react";
 
-const drawerWidth = 240;
+// const drawerWidth = 240;
 
 function Navbar(props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  // const { window } = props;
+  // const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const { isAuthorized, handleSignOut, user } = useLoginContext();
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography data-testid="title" variant="h6" sx={{ my: 2 }}>
-        Facebook Ultra Lite
-        {<img src={logo} alt="logo" style={{ width: "75px" }} />}
-      </Typography>
-      <Divider />
-
-      {isAuthorized && (
-        <List>
-          <ListItemText primary={`Hello, ${user.username?.toUpperCase()}`} />
-
-          <Button
-            sx={{ color: "black" }}
-            component={Link}
-            to="/Post"
-            style={{ fontSize: "1rem" }}
-            className="navLink"
-          >
-            Home
-          </Button>
-          <ListItemText primary={" "} />
-
-          <Button
-            sx={{ color: "black" }}
-            onClick={handleSignOut}
-            component={Link}
-            // as={Link}
-            // to="/signin"
-            style={{ fontSize: "1rem" }}
-            className="navLink"
-          >
-            Sign Out
-          </Button>
-        </List>
-      )}
-    </Box>
-  );
-
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar component="nav">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            {<img src={logo} alt="logo" style={{ width: "75px" }} />}
-          </Typography>
+    <>
+    <HStack >
 
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+          <Stack>
+
+      <Image src={logo} alt="logo" style={{ width: "60px" }} />
+      ( <Spacer />)
+
+      </Stack>
+          <Heading size="md" color="gray.500"
           >
             Facebook Ultra Lite
-          </Typography>
+          </Heading>
+          ( <Spacer />)
+
           {isAuthorized && (
-            <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              <Button
-                sx={{ color: "#fff" }}
-                component={Link}
-                to="/Post"
-                style={{ fontSize: "1rem" }}
-                className="navLink"
-              >
-                Home
-              </Button>
-              <a
-                sx={{ color: "#fff" }}
+            <HStack >
+              <Heading size="md" color="gray.500"
                 style={{
-                  display: "inline-block",
-                  fontSize: "1.1rem",
                   margin: "1% 10px",
                 }}
               >
                 {`Hello, ${user.username?.toUpperCase()}`}
-              </a>
+              </Heading>
+              ( <Spacer />)
 
-              <Button
-                sx={{ color: "#fff" }}
+              <Heading size="md" color="gray.500"
+                // sx={{ color: "#fff" }}
                 onClick={handleSignOut}
-                component={Link}
+                style={{cursor: "pointer"}}
                 // as={Link}
                 // to="/signin"
-                style={{ fontSize: "1rem" }}
-                className="navLink"
+                // style={{ fontSize: "1rem" }}
+                // className="navLink"
               >
                 Sign Out
-              </Button>
-            </Box>
+              </Heading>
+            </HStack>
           )}
-        </Toolbar>
-      </AppBar>
-      <Box component="nav">
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-      <Box component="main" sx={{ p: 3 }}>
-        <Toolbar />
-      </Box>
-    </Box>
+           ( <Spacer />)
+          <IconButton
+          display="inline"
+          position="sticky-left"
+        colorScheme='teal'
+        aria-label='Send email'
+        icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+        onClick={toggleColorMode}
+        alignSelf='flex-end'
+      />
+    </HStack>
+    </>
+
   );
 }
 

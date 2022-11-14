@@ -1,10 +1,11 @@
 import React from "react";
 import axios from "axios";
-import { Form } from "react-bootstrap";
-import Button from "@mui/material/Button";
-import { TextField } from "@mui/material";
+import {  Form } from "react-bootstrap";
+// import Button from "@mui/material/Button";
+// import { TextField } from "@mui/material";
 import { useLoginContext } from "../Context/AuthContext";
 import { usePostContext } from "../Context/PostsContext";
+import { Button, Input } from "@chakra-ui/react";
 
 export default function AddCommentForm(props) {
   const { user } = useLoginContext();
@@ -34,21 +35,19 @@ export default function AddCommentForm(props) {
   return (
     <div>
       <Form onSubmit={addComment} style={{ margin: "10px 50px" }}>
-        <Form.Group className="mb-3">
-          <TextField
-            margin="normal"
-            fullWidth
-            id="content"
-            label="add comment"
-            name="email"
-            type="text"
-            autoFocus
-          />
-        </Form.Group>
+        <Form.Control
+           margin="normal"
+           id="content"
+           label="add comment"
+           name="email"
+           type="text"
+          required
+        />
+
         <Button
           type="submit"
-          fullWidth
-          variant="contained"
+          // variant="contained"
+          colorScheme='blue' variant='outline'
           sx={{ mt: 3, mb: 2 }}
         >
           {" "}

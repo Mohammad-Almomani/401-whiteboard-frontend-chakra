@@ -32,7 +32,7 @@ function AppRoutes() {
       <>
         <Router>
           <MenuAppBar />
-          <Routes>
+          <Routes >
             <Route
               path="/signup/*"
               element={isAuthorized ? <Navigate to="/post" /> : <SignUp />}
@@ -50,7 +50,7 @@ function AppRoutes() {
               element={isAuthorized ? <Post /> : <Navigate to="/signin" />}
             />
           </Routes>
-          <Copyright sx={{ mt: 8, mb: 4 }} />
+          {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
         </Router>
       </>
     </div>
