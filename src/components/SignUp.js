@@ -1,22 +1,18 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { Link } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Alert } from "react-bootstrap";
-import { InputLabel, MenuItem, Select } from "@mui/material";
+import { Alert, Button, Form, FormLabel } from "react-bootstrap";
 import { useLoginContext } from "../Context/AuthContext";
-
-const theme = createTheme();
+import {
+  Avatar,
+  Box,
+  Heading,
+  HStack,
+  Select,
+  Stack,
+  VStack,
+  WrapItem,
+} from "@chakra-ui/react";
+import { LockIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 export default function SignUp() {
   const {
@@ -34,138 +30,162 @@ export default function SignUp() {
   } = useLoginContext();
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
+    <div style={{alignItems: "center"}}>
+    <Box borderColor='gray.100' 
+    borderWidth='2px' 
+    p='4' 
+    borderRadius='lg'
+    w={{base: '90vw', sm:'80vw', lg:'50vw', xl:'40vw'}}
+    alignSelf='center'
+    marginLeft='30%'
+    // marginRight='25%'
+    
+
+    // position='center'
+    >
+            <VStack
+        sx={{
+          marginTop: 8,
+        }}
+      >
+        <VStack spacing={2}>
+          <WrapItem>
+            <Avatar size="lg" icon={<LockIcon fontSize="2rem" />} />
+          </WrapItem>
+
+          <Heading as="h1" size="3xl">
             Sign up
-          </Typography>
-          <Box component="form" noValidate onSubmit={signUp} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
+          </Heading>
+
+          <Form onSubmit={signUp}>
+            <VStack spacing={1}>
+              <FormLabel htmlFor="email">Email Address</FormLabel>
+              <Form.Control
+                id="email"
+                name="email"
+                type="text"
+                onChange={validateEmail}
+                required
+              />
+              {!isValid && (
+                <div className={`message ${isValid ? "success" : "error"}`}>
+                  {message}
+                </div>
+              )}
+              <FormLabel htmlFor="email">Username</FormLabel>
+              <Form.Control
+                id="username"
+                name="username"
+                type="text"
+                required
+              />
+              <FormLabel htmlFor="password">Password</FormLabel>
+              <HStack>
+                <Form.Control
                   required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  onChange={validateEmail}
-                />
-                {!isValid && (
-                  <div className={`message ${isValid ? "success" : "error"}`}>
-                    {message}
-                  </div>
-                )}
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="username"
-                  required
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
                   id="password"
                   label="Password"
                   type={passwordType}
                   name="password"
-                  autoComplete="new-password"
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
+                {passwordType === "password" ? (
+                  <ViewIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={togglePassword}
+                    name="showPassword"
+                    value="remember"
+                    color="primary"
+                  />
+                ) : (
+                  <ViewOffIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={togglePassword}
+                    name="showPassword"
+                    value="remember"
+                    color="primary"
+                  />
+                )}
+              </HStack>
+              <FormLabel htmlFor="password">Confirm Password</FormLabel>
+              <HStack>
+                <Form.Control
                   required
-                  fullWidth
                   name="confirmPassword"
                   label="Confirm Password"
                   type={passwordType}
                   id="confirmPassword"
                   autoComplete="new-password"
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <InputLabel id="demo-simple-select-label">
-                  Please Pick Your Role
-                </InputLabel>
+                {passwordType === "password" ? (
+                  <ViewIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={togglePassword}
+                    name="showPassword"
+                    value="remember"
+                    color="primary"
+                  />
+                ) : (
+                  <ViewOffIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={togglePassword}
+                    name="showPassword"
+                    value="remember"
+                    color="primary"
+                  />
+                )}
+              </HStack>
+              <HStack xs={12}>
+                <FormLabel htmlFor="demo-simple-select">Role</FormLabel>
+
                 <Select
-                  labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={role}
                   label="Role"
                   onChange={handleRoleChange}
                 >
-                  <MenuItem value="user" defaultChecked>
+                  <option value="user" defaultChecked>
                     User
-                  </MenuItem>
-                  <MenuItem value="admin">Admin</MenuItem>
+                  </option>
+                  <option value="admin">Admin</option>
                 </Select>
-              </Grid>
-              <Grid item xs={12}>
-                {notFilled && (
-                  <Alert key="light" variant="danger">
-                    Please fill all the fields
-                  </Alert>
-                )}
-                {NotMatched && (
-                  <Alert key="danger" variant="danger">
-                    Your passwords does not match
-                  </Alert>
-                )}
-                {alreadyExist && (
-                  <Alert key="danger" variant="danger">
-                    This email already exist
-                  </Alert>
-                )}
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      onClick={togglePassword}
-                      value="allowExtraEmails"
-                      color="primary"
-                    />
-                  }
-                  label="Show Password"
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              data-testid="signUpButton"
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
+              </HStack>
+              {notFilled && (
+                <Alert key="light" variant="danger">
+                  Please fill all the fields
+                </Alert>
+              )}
+              {NotMatched && (
+                <Alert key="danger" variant="danger">
+                  Your passwords does not match
+                </Alert>
+              )}
+              {alreadyExist && (
+                <Alert key="danger" variant="danger">
+                  This email already exist
+                </Alert>
+              )}
+              <HStack spacing={10}>
+                {/* <FormLabel htmlFor="showPassword"> Show Password</FormLabel> */}
+              </HStack>
+
+              <Button
+                type="submit"
+                // variant="contained"
+                // sx={{ mt: 3, mb: 2 }}
+                data-testid="signUpButton"
+              >
+                Sign Up
+              </Button>
+              <HStack container justifyContent="flex-end">
                 <Link to="/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+              </HStack>
+            </VStack>
+          </Form>
+        </VStack>
+      </VStack>
+    </Box>
+    </div>
   );
 }

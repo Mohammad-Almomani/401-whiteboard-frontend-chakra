@@ -1,20 +1,16 @@
-import { TextField } from "@mui/material";
 import React from "react";
 import { Form } from "react-bootstrap";
-import Button from "@mui/material/Button";
-import Modal from "react-bootstrap/Modal";
+// import Modal from "react-bootstrap/Modal";
 import { useLoginContext } from "../Context/AuthContext";
 import { usePostContext } from "../Context/PostsContext";
 import { editPostAction } from "../actions/PostsActions";
+import { Button, FormLabel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
 
 export default function TestModal(props) {
   const { user } = useLoginContext();
   const { gitPosts } = usePostContext();
 
   const id = props.id;
-  const handleClose = () => {
-    props.handleClose();
-  };
 
   const editPost = async (e) => {
     e.preventDefault();
@@ -30,63 +26,57 @@ export default function TestModal(props) {
   };
 
   return (
-    <>
-      <Modal
-        style={{ marginTop: "15%" }}
-        show={props.show}
-        onHide={props.handleClose}
-      >
-        <Modal.Header closeButton></Modal.Header>
+    <Modal isOpen={props.isOpen} onClose={props.onClose}>
+    <ModalOverlay />
+    <ModalContent>
+      <ModalHeader>Modal Title</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody>
+        {/* <LocalFireDepartment count={2} /> */}
         <Form onSubmit={editPost} style={{ margin: "3% 30%" }}>
-          <h3>Edit Post</h3>
-          <TextField
+          <h3>Edit Post</h3> <br />
+        <FormLabel htmlFor="title">Title</FormLabel>
+          <Form.Control
             margin="normal"
-            fullWidth
             id="title"
             label="New Title (Optional)"
             type="text"
             name="title"
-            rows={3}
             placeholder={`${props.title}`}
-          />
+            />
 
-          <TextField
+          <FormLabel sx={{ mt: 3, mb: 2 }} htmlFor="content">Content</FormLabel>
+          <Form.Control
             margin="normal"
-            fullWidth
             name="content"
             label="New Content (Optional)"
             type="text"
             id="content"
-            rows={3}
             placeholder={props.content}
-          />
+            />
 
-          <TextField
+          <FormLabel sx={{ mt: 3, mb: 2 }} htmlFor="imgURL">Enter Image URL here</FormLabel>
+          <Form.Control
             margin="normal"
-            fullWidth
             name="imgURL"
             label="New Image URL (Optional)"
             type="text"
             id="imgURL"
-            rows={3}
             placeholder={props.imgURL}
           />
 
-          <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit" sx={{ mt: 3, mb: 2 }}>
             Submit
           </Button>
         </Form>
+      </ModalBody>
 
-        <Modal.Footer>
-          <Button
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={() => handleClose()}
-          >
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+      <ModalFooter>
+        <Button colorScheme='blue' mr={3} onClick={props.onClose}>
+          Close
+        </Button>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>
   );
 }

@@ -1,24 +1,23 @@
 import * as React from "react";
-import { Col, Row } from "react-bootstrap";
 import AddPostForm from "./Add-post-form";
 import ModalFather from "./modalFather";
-import { Button } from "@mui/material";
 import { useLoginContext } from "../Context/AuthContext";
 import { usePostContext } from "../Context/PostsContext";
+import { Box, Grid, SimpleGrid, VStack } from "@chakra-ui/react";
 
 export default function Posts() {
   const { handleSignOut } = useLoginContext();
   const { post } = usePostContext();
 
   return (
-    <>
+    <VStack>
       <AddPostForm />
 
-      <Row style={{ marginLeft: "7.5%" }} xs={1} sm={2} md={3} className="g-4">
+      <SimpleGrid columns={[1,2,3]} spacing={10} >
         {post &&
           post.map((pos, idx) => {
             return (
-              <Col key={idx}>
+              <Box  key={idx}>
                 <ModalFather
                   username={pos.username}
                   content={pos.content}
@@ -27,14 +26,16 @@ export default function Posts() {
                   title={pos.title}
                   imgURL={pos.imgURL}
                 />
-              </Col>
+               </Box>
             );
           })}
-      </Row>
+      </SimpleGrid>
+      <Box>
       <a style={{ display: "block", marginTop: "2%" }}>
         You are done here? don't forget to
-        {<Button onClick={handleSignOut}>Sign Out</Button>}
       </a>
-    </>
+        {<button onClick={handleSignOut}>Sign Out</button>}
+      </Box>
+    </VStack>
   );
 }
