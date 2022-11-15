@@ -17,7 +17,7 @@ import TestModal from "./EditModal";
 import { useLoginContext } from "../Context/AuthContext";
 import { usePostContext } from "../Context/PostsContext";
 import { deletePostAction } from "../actions/PostsActions";
-import { Box, Button, Stack, StackDivider, useDisclosure, VStack } from "@chakra-ui/react";
+import { Box, Button, Stack, StackDivider, useColorMode, useDisclosure, VStack } from "@chakra-ui/react";
 
 export default function ModalFather(props) {
   let [show, setShow] = useState(false);
@@ -25,6 +25,8 @@ export default function ModalFather(props) {
   const { user, canDo } = useLoginContext();
   const { gitPosts } = usePostContext();
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const { colorMode } = useColorMode();
 
   const handleShow = () => {
     onOpen();
@@ -36,7 +38,9 @@ export default function ModalFather(props) {
       <Box borderColor='gray.100' 
     borderWidth='2px' 
     p='4' 
-    borderRadius='lg' style={{ width: '18rem' }}>
+    borderRadius='lg' style={{ width: '18rem' }}
+    bg={ colorMode === "light"? 'gray.200': 'primary.400'}
+    >
         <Card.Img
           variant="top"
           src={props.imgURL ? props.imgURL : image}
@@ -84,12 +88,12 @@ export default function ModalFather(props) {
                             <Button
                       onClick={() => deletePostAction(props.id, gitPosts)}
                       style={{ marginRight: "2%" }}
-                      colorScheme='blue' variant='outline'
+                      colorScheme='red' variant='outline'
                       sx={{ mt: 3, mb: 2 }}
                     >
                       Delete Post
                     </Button>
-                    <Button onClick={() => handleShow()}  colorScheme='blue' variant='outline'
+                    <Button onClick={() => handleShow()}  colorScheme='cyan' variant='outline'
           sx={{ mt: 3, mb: 2 }}>
                       Edit Post
                     </Button>
