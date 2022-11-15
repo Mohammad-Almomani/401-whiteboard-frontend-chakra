@@ -47,7 +47,7 @@ export default function AddCommentForm(props) {
         <Button
           type="submit"
           // variant="contained"
-          colorScheme='blue' variant='outline'
+          colorScheme='green' variant='outline'
           sx={{ mt: 3, mb: 2 }}
         >
           {" "}

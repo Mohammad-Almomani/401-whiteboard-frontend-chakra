@@ -38,7 +38,9 @@ function Navbar(props) {
       ( <Spacer />)
 
       </Stack>
-          <Heading size="md" color="gray.500"
+          <Heading size="md" 
+          bgGradient={colorMode === 'dark'?'linear(to-r, primary.200, primary.100)': 'linear(to-r, primary.400, primary.400)' }
+          bgClip='text'
           >
             Facebook Ultra Lite
           </Heading>
@@ -50,19 +52,18 @@ function Navbar(props) {
                 style={{
                   margin: "1% 10px",
                 }}
+                bgGradient={colorMode === 'dark'?'linear(to-r, primary.200, primary.100)': 'linear(to-r, primary.400, primary.400)' }
+                bgClip='text'
               >
                 {`Hello, ${user.username?.toUpperCase()}`}
               </Heading>
               ( <Spacer />)
 
               <Heading size="md" color="gray.500"
-                // sx={{ color: "#fff" }}
                 onClick={handleSignOut}
                 style={{cursor: "pointer"}}
-                // as={Link}
-                // to="/signin"
-                // style={{ fontSize: "1rem" }}
-                // className="navLink"
+                bgGradient={colorMode === 'dark'?'linear(to-r, primary.200, primary.100)': 'linear(to-r, primary.400, primary.400)' }
+                bgClip='text'
               >
                 Sign Out
               </Heading>
@@ -77,6 +78,7 @@ function Navbar(props) {
         icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
         onClick={toggleColorMode}
         alignSelf='flex-end'
+        variant='ghost'
       />
     </HStack>
     </>

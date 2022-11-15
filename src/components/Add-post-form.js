@@ -6,11 +6,12 @@ import cookies from "react-cookies";
 import Swal from "sweetalert2";
 import { useLoginContext } from "../Context/AuthContext";
 import { usePostContext } from "../Context/PostsContext";
-import { Box, Button, FormLabel } from "@chakra-ui/react";
+import { Box, Button, FormLabel, useColorMode } from "@chakra-ui/react";
 
 export default function AddPostForm() {
   const { user } = useLoginContext();
   const { gitPosts } = usePostContext();
+  const { colorMode } = useColorMode();
 
   const addPost = async (e) => {
     e.preventDefault();
@@ -57,6 +58,7 @@ export default function AddPostForm() {
     borderWidth='2px' 
     p='4' 
     borderRadius='lg'
+    bg={colorMode === "light" ? "gray.100" : "gray.700"}
     >
       <Form onSubmit={addPost} >
         <h3>Create Post</h3>
