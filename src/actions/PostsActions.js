@@ -1,7 +1,7 @@
 import axios from "axios";
 import cookies from "react-cookies";
 import Swal from "sweetalert2";
-import { actionType } from "../types/AuthActionTypes";
+import { FETCH_POSTS } from "../redux/authSlicer";
 
 export const editPostAction = async (id, post, gitPosts) => {
   await axios
@@ -61,5 +61,5 @@ export const gitPostsAction = async (dispatch) => {
       Authorization: `Bearer ${cookies.load("token")}`,
     },
   });
-  dispatch({ type: actionType.FETCH_POSTS, payload: allPosts.data });
+  dispatch(FETCH_POSTS( allPosts.data));
 };

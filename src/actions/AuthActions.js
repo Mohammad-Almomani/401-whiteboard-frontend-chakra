@@ -1,6 +1,6 @@
 import axios from "axios";
 import cookies from "react-cookies";
-import { actionType } from "../types/AuthActionTypes";
+import { FAILED_LOGIN, FAILED_SIGNUP, GET_PROFILE, LOGOUT, SUCCESS_LOGIN, SUCCESS_SIGNUP } from "../redux/authSlicer";
 
 export const login = (dispatch, payload) => {
   try {
@@ -18,11 +18,12 @@ export const login = (dispatch, payload) => {
         cookies.save("token", res.data.token);
         cookies.save("capabilities", JSON.stringify(res.data.capabilities));
         cookies.save("userInfo", JSON.stringify(res.data));
-        dispatch({ type: actionType.SUCCESS_LOGIN, payload: res.data });
+        console.log("res.data", res.data);
+        dispatch(SUCCESS_LOGIN(res.data));
       })
-      .catch((err) => dispatch({ type: actionType.FAILED_LOGIN }));
+      .catch((err) => dispatch(FAILED_LOGIN()));
   } catch (e) {
-    dispatch({ type: actionType.FAILED_LOGIN });
+    dispatch(FAILED_LOGIN());
   }
 };
 
@@ -30,7 +31,7 @@ export const logoutHandler = (dispatch) => {
   cookies.remove("userInfo");
   cookies.remove("token");
   cookies.remove("capabilities");
-  dispatch({ type: actionType.LOGOUT });
+  dispatch(LOGOUT());
 };
 
 export const getUserProfile = async (dispatch) => {
@@ -43,7 +44,7 @@ export const getUserProfile = async (dispatch) => {
       },
     })
     .then((res) => {
-      dispatch({ type: actionType.GET_PROFILE, payload: res.data });
+      dispatch(GET_PROFILE(res.data));
       console.log("done getting user info");
     });
 };
@@ -53,14 +54,13 @@ export const signupAction = (dispatch, payload) => {
     axios
       .post(`${process.env.REACT_APP_BACKEND}/signup`, payload)
       .then((res) => {
-        console.log(res.data.user);
         cookies.save("token", res.data.token);
         cookies.save("capabilities", JSON.stringify(res.data.capabilities));
         cookies.save("userInfo", JSON.stringify(res.data));
-        dispatch({ type: actionType.SUCCESS_SIGNUP, payload: res.data });
+        dispatch(SUCCESS_SIGNUP(res.data));
       })
-      .catch((e) => dispatch({ type: actionType.FAILED_SIGNUP }));
+      .catch((e) => dispatch(FAILED_SIGNUP ()));
   } catch (e) {
-    dispatch({ type: actionType.FAILED_SIGNUP });
+    dispatch(FAILED_SIGNUP ());
   }
 };

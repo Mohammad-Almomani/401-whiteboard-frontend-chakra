@@ -1,15 +1,11 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-// import Modal from "react-bootstrap/Modal";
 import { useLoginContext } from "../Context/AuthContext";
-import { usePostContext } from "../Context/PostsContext";
 import { editPostAction } from "../actions/PostsActions";
 import { Button, FormLabel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
 
 export default function TestModal(props) {
-  const { user } = useLoginContext();
-  const { gitPosts } = usePostContext();
-
+  const { userInfo, gitPosts } = useLoginContext();
   const id = props.id;
 
   const editPost = async (e) => {
@@ -18,8 +14,8 @@ export default function TestModal(props) {
       title: e.target.title.value || props.title,
       content: e.target.content.value || props.content,
       imgURL: e.target.imgURL.value || props.imgURL,
-      username: user.username,
-      userID: user.id,
+      username: userInfo.username,
+      userID: userInfo.id,
     };
     editPostAction(id, post, gitPosts);
     e.target.reset();

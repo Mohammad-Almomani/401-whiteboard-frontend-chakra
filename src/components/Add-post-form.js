@@ -1,16 +1,13 @@
 import React from "react";
 import axios from "axios";
-// import { Button, TextField } from "@mui/material";
 import { Form } from "react-bootstrap";
 import cookies from "react-cookies";
 import Swal from "sweetalert2";
 import { useLoginContext } from "../Context/AuthContext";
-import { usePostContext } from "../Context/PostsContext";
 import { Box, Button, FormLabel, useColorMode } from "@chakra-ui/react";
 
 export default function AddPostForm() {
-  const { user } = useLoginContext();
-  const { gitPosts } = usePostContext();
+  const { user, gitPosts } = useLoginContext();
   const { colorMode } = useColorMode();
 
   const addPost = async (e) => {

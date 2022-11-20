@@ -4,6 +4,8 @@ import "./index.css";
 import { ChakraProvider, ColorModeScript, extendTheme } from "@chakra-ui/react";
 import App from "./App";
 import { customTheme } from './chakraTheme/theme';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 const config = {
   initialColorMode: 'dark',
@@ -15,10 +17,12 @@ const theme = extendTheme({ config })
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+    <Provider store={store}>
     <ChakraProvider theme={customTheme}>
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <App />
     </ChakraProvider>
+    </Provider>
   </React.StrictMode>
 );
 

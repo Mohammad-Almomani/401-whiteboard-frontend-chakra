@@ -7,47 +7,77 @@ import {
   logoutHandler,
   signupAction,
 } from "../actions/AuthActions";
-import { useReducer } from "react";
-import { AuthReducer } from "../reducers/AuthReducer";
-import { actionType } from "../types/AuthActionTypes";
+
+import { 
+  RESET_SIGNUP,
+  NOT_FILLED_SIGNUP,
+  NOT_MATCHED_SIGNUP,
+  NOT_FILLED_LOGIN,
+  NOT_FILLED_RESET_LOGIN,
+  SIGNUP_VALID,
+  SIGNUP_INVALID,
+  SIGN_SHOW_PASSWORD,
+  SIGN_HIDE_PASSWORD,
+  LOG_SHOW_PASSWORD,
+  LOG_HIDE_PASSWORD,
+  CONTACT_ADMIN,
+  HANDLE_ROLE_CHANGE,
+
+  passwordTypeSignInRedux,
+  passwordTypeRedux,
+  messageRedux,
+  isValidRedux,
+  notFilledSignInRedux,
+  NotMatchedRedux,
+  notFilledRedux,
+  alreadyExistRedux,
+  tokenRedux,
+  notAuthedRedux,
+  isAuthorizedRedux,
+  userInfoRedux,
+  capabilitiesRedux,
+  contactAdminRedux,
+  roleRedux, 
+  postsRedux} from '../redux/authSlicer';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { gitPostsAction } from "../actions/PostsActions";
+
 
 const LoginContext = createContext();
 
 export const useLoginContext = () => useContext(LoginContext);
 
 const LoginContextProvider = (props) => {
-  const token = cookies.load("token") ? cookies.load("token") : "";
-  const userInfo = cookies.load("userInfo") ? cookies.load("userInfo") : {};
-  const capabilities = cookies.load("capabilities");
-  const initialState = {
-    userInfo: userInfo,
-    role: "user",
-    isAuthorized: token ? true : false,
-    capabilities: capabilities,
-    notAuthed: false,
-    token: token,
-    alreadyExist: false,
-    notFilled: false,
-    NotMatched: false,
-    notFilledSignIn: false,
-    isValid: false,
-    message: "",
-    passwordType: "password",
-    passwordTypeSignIn: "password",
-    contactAdmin: false,
-  };
 
-  const [user, dispatch] = useReducer(AuthReducer, initialState);
+  const passwordTypeSignIn = useSelector(passwordTypeSignInRedux)
+  const userInfo = useSelector(userInfoRedux)
+  const passwordType = useSelector(passwordTypeRedux)
+  const message = useSelector(messageRedux)
+  const isValid = useSelector(isValidRedux)
+  const notFilledSignIn = useSelector(notFilledSignInRedux)
+  const NotMatched = useSelector(NotMatchedRedux)
+  const notFilled = useSelector(notFilledRedux)
+  const alreadyExist = useSelector(alreadyExistRedux)
+  const token = useSelector(tokenRedux)
+  const notAuthed = useSelector(notAuthedRedux)
+  const isAuthorized = useSelector(isAuthorizedRedux)
+  const capabilities = useSelector(capabilitiesRedux)
+  const contactAdmin = useSelector(contactAdminRedux)
+  const role = useSelector(roleRedux)
+  const post = useSelector(postsRedux)
+  
+  const dispatch = useDispatch();
 
   const handleLogIn = (e) => {
     e.preventDefault();
     const filledData = new FormData(e.currentTarget);
-    dispatch({ type: actionType.NOT_FILLED_RESET_LOGIN });
+    dispatch(NOT_FILLED_RESET_LOGIN());
     if (!filledData.get("email") || !filledData.get("password")) {
-      dispatch({ type: actionType.NOT_FILLED_LOGIN });
+      dispatch(NOT_FILLED_LOGIN());
       return;
     }
-    dispatch({ type: actionType.NOT_FILLED_RESET_LOGIN });
+    dispatch(NOT_FILLED_RESET_LOGIN());
 
     const data = {
       username: filledData.get("email"),
@@ -66,37 +96,34 @@ const LoginContextProvider = (props) => {
   // forms validation check
 
   const togglePassword = () => {
-    if (user.passwordType === "password") {
-      dispatch({ type: actionType.SIGN_SHOW_PASSWORD });
+    if (passwordType === "password") {
+      dispatch(SIGN_SHOW_PASSWORD());
       return;
     }
-    dispatch({ type: actionType.SIGN_HIDE_PASSWORD });
+    dispatch(SIGN_HIDE_PASSWORD());
   };
 
   const togglePasswordSignIn = () => {
-    if (user.passwordTypeSignIn === "password") {
-      dispatch({ type: actionType.LOG_SHOW_PASSWORD });
+    if (passwordTypeSignIn === "password") {
+      dispatch(LOG_SHOW_PASSWORD());
       return;
     }
-    dispatch({ type: actionType.LOG_HIDE_PASSWORD });
+    dispatch(LOG_HIDE_PASSWORD());
   };
 
   const handleForgetPassword = () => {
-    return dispatch({ type: actionType.CONTACT_ADMIN });
+    return dispatch(CONTACT_ADMIN());
   };
 
   // signup form validation
   const handleRoleChange = (event) => {
-    dispatch({
-      type: actionType.HANDLE_ROLE_CHANGE,
-      payload: event.target.value,
-    });
+    dispatch(HANDLE_ROLE_CHANGE(event.target.value));
   };
 
   const signUp = (e) => {
     e.preventDefault();
     const filledData = new FormData(e.currentTarget);
-    dispatch({ type: actionType.RESET_SIGNUP });
+    dispatch(RESET_SIGNUP());
 
     if (
       !filledData.get("email") ||
@@ -104,23 +131,24 @@ const LoginContextProvider = (props) => {
       !filledData.get("confirmPassword") ||
       !filledData.get("username")
     ) {
-      dispatch({ type: actionType.NOT_FILLED_SIGNUP });
+      dispatch(NOT_FILLED_SIGNUP());
       return;
     }
-    dispatch({ type: actionType.RESET_SIGNUP });
+    dispatch(RESET_SIGNUP());
 
     if (filledData.get("password") !== filledData.get("confirmPassword")) {
-      dispatch({ type: actionType.NOT_MATCHED_SIGNUP });
+      dispatch(NOT_MATCHED_SIGNUP());
       return;
     }
-    dispatch({ type: actionType.RESET_SIGNUP });
+    dispatch(RESET_SIGNUP ());
 
-    if (user.isValid) {
+
+    if (isValid) {
       const data = {
         username: filledData.get("username"),
         email: filledData.get("email"),
         password: filledData.get("password"),
-        role: user.role,
+        role: role,
       };
       console.log(data);
       signupAction(dispatch, data);
@@ -132,9 +160,9 @@ const LoginContextProvider = (props) => {
   const validateEmail = (event) => {
     const email = event.target.value;
     if (emailRegex.test(email)) {
-      dispatch({ type: actionType.SIGNUP_VALID });
+      dispatch(SIGNUP_VALID ());
     } else {
-      dispatch({ type: actionType.SIGNUP_INVALID });
+      dispatch(SIGNUP_INVALID ());
     }
   };
 
@@ -153,31 +181,39 @@ const LoginContextProvider = (props) => {
     return false;
   };
 
+  const gitPosts = async () => {
+    gitPostsAction(dispatch);
+  };
+
+  
   const value = {
-    notFilled: user.notFilled,
-    notAuthed: user.notAuthed,
+    gitPosts,
+    post,
+    notFilled,
+    notAuthed,
     togglePassword,
     handleForgetPassword,
     handleLogIn,
-    contactAdmin: user.contactAdmin,
-    passwordType: user.passwordType,
-    isAuthorized: user.isAuthorized,
+    contactAdmin,
+    passwordType,
+    isAuthorized,
     handleSignOut,
-    NotMatched: user.NotMatched,
-    alreadyExist: user.alreadyExist,
-    isValid: user.isValid,
-    message: user.message,
-    role: user.role,
+    NotMatched,
+    alreadyExist,
+    isValid,
+    message,
+    role,
     handleRoleChange,
     signUp,
     validateEmail,
     togglePasswordSignIn,
-    passwordTypeSignIn: user.passwordTypeSignIn,
-    notFilledSignIn: user.notFilledSignIn,
-    user: user.userInfo,
-    capabilities: user.capabilities,
+    notFilledSignIn,
+    userInfo,
+    capabilities,
     checkToken,
+    token,
     canDo,
+    passwordTypeSignIn
   };
   return (
     <LoginContext.Provider value={value}>

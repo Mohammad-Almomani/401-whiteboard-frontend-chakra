@@ -1,15 +1,11 @@
 import React from "react";
 import axios from "axios";
 import {  Form } from "react-bootstrap";
-// import Button from "@mui/material/Button";
-// import { TextField } from "@mui/material";
 import { useLoginContext } from "../Context/AuthContext";
-import { usePostContext } from "../Context/PostsContext";
-import { Button, Input } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 
 export default function AddCommentForm(props) {
-  const { user } = useLoginContext();
-  const { gitPosts } = usePostContext();
+  const { user, gitPosts } = useLoginContext();
 
   const addComment = async (e) => {
     e.preventDefault();
@@ -46,7 +42,6 @@ export default function AddCommentForm(props) {
 
         <Button
           type="submit"
-          // variant="contained"
           colorScheme='green' variant='outline'
           sx={{ mt: 3, mb: 2 }}
         >
