@@ -29,12 +29,6 @@ export const authSlicer = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1;
-    },
-    decrement: (state) => {
-      state.value -= 1;
-    },
     SUCCESS_LOGIN: (state, action) => {
         console.log("SUCCESS_LOGIN", action.payload.capabilities);
         state.userInfo = action.payload;
