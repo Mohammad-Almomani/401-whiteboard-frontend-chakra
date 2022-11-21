@@ -1,11 +1,17 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-import { useLoginContext } from "../Context/AuthContext";
 import { editPostAction } from "../actions/PostsActions";
 import { Button, FormLabel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { userInfoRedux } from "../redux/authSlicer";
+import { gitPosts } from "../actions/PostsActions";
 
 export default function TestModal(props) {
-  const { userInfo, gitPosts } = useLoginContext();
+
+  const dispatch = useDispatch();
+
+  const userInfo = useSelector(userInfoRedux)
+
   const id = props.id;
 
   const editPost = async (e) => {
@@ -17,7 +23,7 @@ export default function TestModal(props) {
       username: userInfo.username,
       userID: userInfo.id,
     };
-    editPostAction(id, post, gitPosts);
+    editPostAction(id, post, gitPosts, dispatch);
     e.target.reset();
   };
 

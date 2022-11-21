@@ -1,18 +1,20 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from "react";
 import PropTypes from "prop-types";
-
 import logo from "./assets/logo-re.png";
-import { useLoginContext } from "../Context/AuthContext";
-import { Box, Heading, HStack, IconButton, Image, Spacer, Stack, useColorMode } from "@chakra-ui/react";
+import { Heading, HStack, IconButton, Image, Spacer, Stack, useColorMode } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-
-// const drawerWidth = 240;
+import { useDispatch, useSelector } from "react-redux";
+import { isAuthorizedRedux, userInfoRedux } from "../redux/authSlicer";
+import { logoutHandler } from "../actions/AuthActions";
 
 function Navbar(props) {
 
-  const { isAuthorized, handleSignOut, userInfo } = useLoginContext();
+  const userInfo = useSelector(userInfoRedux)
+  const isAuthorized = useSelector(isAuthorizedRedux)
+
   const { colorMode, toggleColorMode } = useColorMode();
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -45,7 +47,7 @@ function Navbar(props) {
               ( <Spacer />)
 
               <Heading size="md" color="gray.500"
-                onClick={handleSignOut}
+                onClick={()=>logoutHandler(dispatch)}
                 style={{cursor: "pointer"}}
                 bgGradient={colorMode === 'dark'?'linear(to-r, primary.200, primary.100)': 'linear(to-r, primary.400, primary.400)' }
                 bgClip='text'

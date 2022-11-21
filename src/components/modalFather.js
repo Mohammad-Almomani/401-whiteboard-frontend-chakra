@@ -4,17 +4,19 @@ import AddCommentForm from "./Add-comment-form";
 import { Card } from "react-bootstrap";
 import image from "./assets/img.jpg";
 import TestModal from "./EditModal";
-import { useLoginContext } from "../Context/AuthContext";
 import { deletePostAction } from "../actions/PostsActions";
 import { Box, Button, Stack, StackDivider, useColorMode, useDisclosure, VStack } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { userInfoRedux } from "../redux/authSlicer";
+import { gitPosts } from "../actions/PostsActions";
+import { canDo } from "../actions/AuthActions";
 
 export default function ModalFather(props) {
   let [show, setShow] = useState(false);
 
-  const { userInfo, canDo, gitPosts } = useLoginContext();
-  // const {  } = usePostContext();
+  const dispatch = useDispatch();
+  const userInfo = useSelector(userInfoRedux)
   const { isOpen, onOpen, onClose } = useDisclosure()
-
   const { colorMode } = useColorMode();
 
   const handleShow = () => {
@@ -70,10 +72,10 @@ export default function ModalFather(props) {
                 />
 
             <AddCommentForm postID={props.id} gitPosts={props.gitPosts} />
-                {canDo(userInfo.username, props.username) && (
+                {canDo(userInfo.username, props.username, userInfo) && (
                   <>
                   <Button
-            onClick={() => deletePostAction(props.id, gitPosts)}
+            onClick={() => deletePostAction(props.id, gitPosts, dispatch)}
             style={{ marginRight: "2%" }}
             colorScheme='red' variant='outline'
             sx={{ mt: 3, mb: 2 }}

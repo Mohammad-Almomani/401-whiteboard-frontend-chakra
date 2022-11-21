@@ -3,11 +3,17 @@ import axios from "axios";
 import { Form } from "react-bootstrap";
 import cookies from "react-cookies";
 import Swal from "sweetalert2";
-import { useLoginContext } from "../Context/AuthContext";
 import { Box, Button, FormLabel, useColorMode } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { userInfoRedux } from "../redux/authSlicer";
+import { gitPosts } from "../actions/PostsActions";
 
 export default function AddPostForm() {
-  const { user, gitPosts } = useLoginContext();
+
+  const userInfo = useSelector(userInfoRedux)
+  const dispatch = useDispatch();
+
+
   const { colorMode } = useColorMode();
 
   const addPost = async (e) => {
@@ -17,8 +23,8 @@ export default function AddPostForm() {
       title: e.target.title.value,
       content: e.target.content.value,
       imgURL: e.target.imgURL.value,
-      username: user.username,
-      userID: user.id,
+      username: userInfo.username,
+      userID: userInfo.id,
     };
 
     await axios
@@ -38,7 +44,7 @@ export default function AddPostForm() {
           timer: 1500,
         });
         e.target.reset();
-        gitPosts();
+        gitPosts(dispatch);
       })
       .catch((err) => {
         console.log(err);

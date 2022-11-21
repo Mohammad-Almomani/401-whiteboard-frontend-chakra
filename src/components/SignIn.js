@@ -1,21 +1,21 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { Alert, Button, Form, FormLabel } from "react-bootstrap";
-import { useLoginContext } from "../Context/AuthContext";
 import {  LockIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { Avatar, WrapItem, Heading, VStack, HStack, Box } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import { contactAdminRedux, CONTACT_ADMIN, notAuthedRedux, notFilledSignInRedux, passwordTypeSignInRedux } from "../redux/authSlicer";
+import { handleLogIn, togglePasswordSignIn } from "../actions/AuthActions";
+import { useDispatch } from "react-redux";
 
 export default function MaterialSignIn() {
-  const {
-    notFilledSignIn,
-    notAuthed,
-    togglePasswordSignIn,
-    handleForgetPassword,
-    handleLogIn,
-    contactAdmin,
-    passwordTypeSignIn,
-  } = useLoginContext();
 
+  const dispatch = useDispatch();
+
+  const passwordTypeSignIn = useSelector(passwordTypeSignInRedux)
+  const notFilledSignIn = useSelector(notFilledSignInRedux)
+  const notAuthed = useSelector(notAuthedRedux)
+  const contactAdmin = useSelector(contactAdminRedux)
 
 
   return (
@@ -48,7 +48,7 @@ export default function MaterialSignIn() {
           </Heading>
           </VStack>
 
-          <Form onSubmit={handleLogIn}>
+          <Form onSubmit={(e)=>handleLogIn(e, dispatch)}>
 
           <VStack spacing={4}
           >
@@ -70,15 +70,15 @@ export default function MaterialSignIn() {
               />
               {passwordTypeSignIn == 'password'? <ViewIcon
                   style={{ cursor: "pointer" }}
-                    onClick={togglePasswordSignIn}
+                    onClick={()=>togglePasswordSignIn(dispatch, passwordTypeSignIn)}
                     name="showPassword"
                     value="remember"
                     color="primary"
                   />:
                   <ViewOffIcon
                   style={{ cursor: "pointer" }}
-                    onClick={togglePasswordSignIn}
-                    name="showPassword"
+                  onClick={()=>togglePasswordSignIn(dispatch, passwordTypeSignIn)}
+                  name="showPassword"
                     value="remember"
                     color="primary"
                   />}
@@ -108,7 +108,7 @@ export default function MaterialSignIn() {
 
             <HStack >
               <p >
-                <Link onClick={handleForgetPassword}>Forgot password?</Link>
+                <Link onClick={()=>dispatch(CONTACT_ADMIN())}>Forgot password?</Link>
               </p>
               <p >
                 <Link to="/signup" variant="body2" data-testid="signUpRoute">
@@ -119,7 +119,7 @@ export default function MaterialSignIn() {
 
         </VStack>
         {contactAdmin && (
-          <Alert key="strong" variant="danger" onClick={handleForgetPassword}>
+          <Alert key="strong" variant="danger" onClick={()=>dispatch(CONTACT_ADMIN())}>
             Please contact the admin to reset your password
           </Alert>
         )}

@@ -3,7 +3,7 @@ import cookies from "react-cookies";
 import Swal from "sweetalert2";
 import { FETCH_POSTS } from "../redux/authSlicer";
 
-export const editPostAction = async (id, post, gitPosts) => {
+export const editPostAction = async (id, post, gitPosts, dispatch) => {
   await axios
     .put(`${process.env.REACT_APP_BACKEND}/post/${id}`, post, {
       headers: {
@@ -12,7 +12,7 @@ export const editPostAction = async (id, post, gitPosts) => {
     })
     .then((res) => {
       Swal.fire("Post Updated Successfully!", "", "success");
-      gitPosts();
+      gitPosts(dispatch);
     })
     .catch((err) => {
       Swal.fire({
@@ -23,7 +23,7 @@ export const editPostAction = async (id, post, gitPosts) => {
     });
 };
 
-export const deletePostAction = async (id, gitPosts) => {
+export const deletePostAction = async (id, gitPosts, dispatch) => {
   Swal.fire({
     title: "Are you sure?",
     text: "You won't be able to revert this!",
@@ -41,7 +41,7 @@ export const deletePostAction = async (id, gitPosts) => {
           },
         })
         .then((res) => {
-          gitPosts();
+          gitPosts(dispatch);
           Swal.fire("Deleted!", "Your file has been deleted.", "success");
         })
         .catch((err) => {
@@ -55,7 +55,7 @@ export const deletePostAction = async (id, gitPosts) => {
   });
 };
 
-export const gitPostsAction = async (dispatch) => {
+export const gitPosts = async (dispatch) => {
   const allPosts = await axios.get(`${process.env.REACT_APP_BACKEND}/post`, {
     headers: {
       Authorization: `Bearer ${cookies.load("token")}`,

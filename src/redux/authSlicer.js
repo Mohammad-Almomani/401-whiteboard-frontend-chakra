@@ -101,7 +101,7 @@ export const authSlicer = createSlice({
         state.passwordTypeSignIn = "password";
         },
       CONTACT_ADMIN: (state) => {
-        state.contactAdmin = true;
+        state.contactAdmin = !state.contactAdmin;
         },
        HANDLE_ROLE_CHANGE: (state, action) => {
         state.role = action.payload;

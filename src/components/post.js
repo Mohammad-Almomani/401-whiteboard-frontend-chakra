@@ -1,11 +1,15 @@
 import * as React from "react";
 import AddPostForm from "./Add-post-form";
 import ModalFather from "./modalFather";
-import { useLoginContext } from "../Context/AuthContext";
 import { Box, SimpleGrid, VStack } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { postsRedux } from "../redux/authSlicer";
+import { logoutHandler } from "../actions/AuthActions";
 
 export default function Posts() {
-  const { handleSignOut, post } = useLoginContext();
+  const dispatch = useDispatch();
+  const post = useSelector(postsRedux)
+
 
   return (
     <VStack>
@@ -32,7 +36,7 @@ export default function Posts() {
       <a style={{ display: "block", marginTop: "2%" }}>
         You are done here? don't forget to
       </a>
-        {<button onClick={handleSignOut}>Sign Out</button>}
+        {<button onClick={() => logoutHandler(dispatch)}>Sign Out</button>}
       </Box>
     </VStack>
   );
