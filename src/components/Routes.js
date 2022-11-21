@@ -11,16 +11,22 @@ import Post from "./post";
 import Copyright from "./CopyRight";
 import MenuAppBar from "./navbar";
 import { useEffect } from "react";
-import { useLoginContext } from "../Context/AuthContext";
 import cookies from "react-cookies";
+import { useDispatch, useSelector } from "react-redux";
+import { isAuthorizedRedux } from "../redux/authSlicer";
+import { gitPosts } from "../actions/PostsActions";
+import { checkToken } from "../actions/AuthActions";
 
 function AppRoutes() {
-  const { isAuthorized, checkToken, gitPosts } = useLoginContext();
+  
+  const dispatch = useDispatch();
+
+  const isAuthorized = useSelector(isAuthorizedRedux)
 
   useEffect(() => {
     if (cookies.load("token")) {
-      checkToken();
-      gitPosts();
+      checkToken(dispatch);
+      gitPosts(dispatch);
     }
   }, [isAuthorized]);
 

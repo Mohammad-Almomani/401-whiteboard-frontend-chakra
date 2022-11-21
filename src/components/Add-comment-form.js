@@ -1,19 +1,23 @@
 import React from "react";
 import axios from "axios";
 import {  Form } from "react-bootstrap";
-import { useLoginContext } from "../Context/AuthContext";
 import { Button } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { userInfoRedux } from "../redux/authSlicer";
+import { gitPosts } from "../actions/PostsActions";
 
 export default function AddCommentForm(props) {
-  const { user, gitPosts } = useLoginContext();
+  const userInfo = useSelector(userInfoRedux)
+  const dispatch = useDispatch();
+
 
   const addComment = async (e) => {
     e.preventDefault();
     const comment = {
       comment: e.target.content.value,
       postID: props.postID,
-      userID: user.id,
-      commentAuthor: user.username,
+      userID: userInfo.id,
+      commentAuthor: userInfo.username,
     };
     try {
       const qq = await axios.post(
@@ -22,7 +26,7 @@ export default function AddCommentForm(props) {
       );
       console.log(qq.data);
       e.target.reset();
-      gitPosts();
+      gitPosts(dispatch);
     } catch (error) {
       console.log(error);
     }
