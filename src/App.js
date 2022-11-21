@@ -3,17 +3,20 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import LoginContextProvider from "./Context/AuthContext";
-import PostContextProvider from "./Context/PostsContext";
+import { Provider } from "react-redux";
+
+import { store } from "./redux/store";
+// import PostContextProvider from "./Context/PostsContext";
 
 import AppRoutes from "./components/Routes";
 
 function App() {
   return (
-    <LoginContextProvider>
-      <PostContextProvider>
+    <Provider store={store}>
+      <LoginContextProvider>
         <AppRoutes />
-      </PostContextProvider>
-    </LoginContextProvider>
+      </LoginContextProvider>
+    </Provider>
   );
 }
 

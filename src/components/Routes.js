@@ -12,13 +12,10 @@ import Copyright from "./CopyRight";
 import MenuAppBar from "./navbar";
 import { useEffect } from "react";
 import { useLoginContext } from "../Context/AuthContext";
-import { usePostContext } from "../Context/PostsContext";
 import cookies from "react-cookies";
 
 function AppRoutes() {
-  const { isAuthorized, checkToken } = useLoginContext();
-
-  const { gitPosts } = usePostContext();
+  const { isAuthorized, checkToken, gitPosts } = useLoginContext();
 
   useEffect(() => {
     if (cookies.load("token")) {

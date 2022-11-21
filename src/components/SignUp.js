@@ -8,7 +8,6 @@ import {
   Heading,
   HStack,
   Select,
-  Stack,
   VStack,
   WrapItem,
 } from "@chakra-ui/react";
@@ -176,7 +175,7 @@ export default function SignUp() {
               >
                 Sign Up
               </Button>
-              <HStack container justifyContent="flex-end">
+              <HStack justifyContent="flex-end">
                 <Link to="/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>

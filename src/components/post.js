@@ -2,12 +2,10 @@ import * as React from "react";
 import AddPostForm from "./Add-post-form";
 import ModalFather from "./modalFather";
 import { useLoginContext } from "../Context/AuthContext";
-import { usePostContext } from "../Context/PostsContext";
 import { Box, SimpleGrid, VStack } from "@chakra-ui/react";
 
 export default function Posts() {
-  const { handleSignOut } = useLoginContext();
-  const { post } = usePostContext();
+  const { handleSignOut, post } = useLoginContext();
 
   return (
     <VStack>
