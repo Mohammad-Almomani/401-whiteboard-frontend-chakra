@@ -1,7 +1,7 @@
 import axios from "axios";
 import cookies from "react-cookies";
 import Swal from "sweetalert2";
-import { FETCH_POSTS } from "../redux/authSlicer";
+import { FETCH_POSTS } from "../redux/postSlicer";
 
 export const editPostAction = async (id, post, gitPosts, dispatch) => {
   await axios

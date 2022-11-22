@@ -1,7 +1,15 @@
 import axios from "axios";
 import cookies from "react-cookies";
-import { FAILED_LOGIN, FAILED_SIGNUP, GET_PROFILE, LOGOUT, LOG_HIDE_PASSWORD, LOG_SHOW_PASSWORD, NOT_FILLED_LOGIN, NOT_FILLED_RESET_LOGIN, NOT_FILLED_SIGNUP, NOT_MATCHED_SIGNUP, RESET_SIGNUP, SIGNUP_INVALID, SIGNUP_VALID, SIGN_HIDE_PASSWORD, SIGN_SHOW_PASSWORD, SUCCESS_LOGIN, SUCCESS_SIGNUP } from "../redux/authSlicer";
+import {
+  FAILED_LOGIN,
+  FAILED_SIGNUP,
+  GET_PROFILE,
+  LOGOUT,
+  SUCCESS_LOGIN,
+  SUCCESS_SIGNUP,
+} from "../redux/authSlicer";
 import base64 from "base-64";
+import { LOG_HIDE_PASSWORD, LOG_SHOW_PASSWORD, NOT_FILLED_LOGIN, NOT_FILLED_RESET_LOGIN, NOT_FILLED_SIGNUP, NOT_MATCHED_SIGNUP, RESET_SIGNUP, SIGNUP_INVALID, SIGNUP_VALID, SIGN_HIDE_PASSWORD, SIGN_SHOW_PASSWORD } from "../redux/formValidationSlicer";
 
 export const login = (dispatch, payload) => {
   try {
@@ -60,12 +68,11 @@ export const signupAction = (dispatch, payload) => {
         cookies.save("userInfo", JSON.stringify(res.data));
         dispatch(SUCCESS_SIGNUP(res.data));
       })
-      .catch((e) => dispatch(FAILED_SIGNUP ()));
+      .catch((e) => dispatch(FAILED_SIGNUP()));
   } catch (e) {
-    dispatch(FAILED_SIGNUP ());
+    dispatch(FAILED_SIGNUP());
   }
 };
-
 
 export const canDo = (PostOwner, LoggedUser, userInfo) => {
   if (PostOwner === LoggedUser || userInfo.capabilities.includes("update")) {
@@ -74,8 +81,6 @@ export const canDo = (PostOwner, LoggedUser, userInfo) => {
   return false;
 };
 
-
-
 export const checkToken = async (dispatch) => {
   const token = cookies.load("token");
   if (token) {
@@ -83,7 +88,6 @@ export const checkToken = async (dispatch) => {
     getUserProfile(dispatch);
   }
 };
-
 
 export const handleLogIn = (e, dispatch) => {
   e.preventDefault();
@@ -99,9 +103,7 @@ export const handleLogIn = (e, dispatch) => {
     username: filledData.get("email"),
     password: filledData.get("password"),
   };
-  const encodedCredintial = base64.encode(
-    `${data.username}:${data.password}`
-  );
+  const encodedCredintial = base64.encode(`${data.username}:${data.password}`);
   login(dispatch, encodedCredintial);
 };
 
@@ -126,13 +128,11 @@ const emailRegex = /\S+@\S+\.\S+/;
 export const validateEmail = (event, dispatch) => {
   const email = event.target.value;
   if (emailRegex.test(email)) {
-    dispatch(SIGNUP_VALID ());
+    dispatch(SIGNUP_VALID());
   } else {
-    dispatch(SIGNUP_INVALID ());
+    dispatch(SIGNUP_INVALID());
   }
 };
-
-
 
 export const signUp = (e, dispatch, isValid, role) => {
   e.preventDefault();
@@ -154,8 +154,7 @@ export const signUp = (e, dispatch, isValid, role) => {
     dispatch(NOT_MATCHED_SIGNUP());
     return;
   }
-  dispatch(RESET_SIGNUP ());
-
+  dispatch(RESET_SIGNUP());
 
   if (isValid) {
     const data = {
@@ -168,4 +167,3 @@ export const signUp = (e, dispatch, isValid, role) => {
     signupAction(dispatch, data);
   }
 };
-

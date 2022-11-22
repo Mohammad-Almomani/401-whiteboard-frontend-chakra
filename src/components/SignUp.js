@@ -14,16 +14,10 @@ import { LockIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
   alreadyExistRedux,
-  HANDLE_ROLE_CHANGE,
-  isValidRedux,
-  messageRedux,
-  notFilledRedux,
-  NotMatchedRedux,
-  passwordTypeRedux,
-  roleRedux,
 } from "../redux/authSlicer";
 
 import { signUp, togglePassword, validateEmail } from "../actions/AuthActions";
+import { HANDLE_ROLE_CHANGE, isValidRedux, messageRedux, notFilledRedux, NotMatchedRedux, passwordTypeRedux, roleRedux } from "../redux/formValidationSlicer";
 
 export default function SignUp() {    
 

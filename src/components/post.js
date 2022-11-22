@@ -3,7 +3,7 @@ import AddPostForm from "./Add-post-form";
 import ModalFather from "./modalFather";
 import { Box, SimpleGrid, VStack } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { postsRedux } from "../redux/authSlicer";
+import { postsRedux } from "../redux/postSlicer";
 import { logoutHandler } from "../actions/AuthActions";
 
 export default function Posts() {
