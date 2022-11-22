@@ -4,9 +4,10 @@ import { Alert, Button, Form, FormLabel } from "react-bootstrap";
 import {  LockIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { Avatar, WrapItem, Heading, VStack, HStack, Box } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { contactAdminRedux, CONTACT_ADMIN, notAuthedRedux, notFilledSignInRedux, passwordTypeSignInRedux } from "../redux/authSlicer";
+import { notAuthedRedux } from "../redux/authSlicer";
 import { handleLogIn, togglePasswordSignIn } from "../actions/AuthActions";
 import { useDispatch } from "react-redux";
+import { contactAdminRedux, CONTACT_ADMIN, notFilledSignInRedux, passwordTypeSignInRedux } from "../redux/formValidationSlicer";
 
 export default function MaterialSignIn() {
 
